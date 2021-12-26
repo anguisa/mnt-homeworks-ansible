@@ -1,21 +1,23 @@
 pipeline {
     agent {
-        label 'linux'
+        label 'ansible'
     }
+
     stages {
         stage('Checkout') {
-            steps{
-                git branch: 'main', credentialsId: '7107e6e5-6511-44ab-903a-387cb7a5c266', url: 'git@github.com:netology-code/mnt-homeworks-ansible.git'
+            steps {
+                git branch: '1011', credentialsId: 'Yandex', url: 'git@github.com:anguisa/mnt-homeworks-ansible.git'
             }
         }
-        stage('Install molecule') {
-            steps{
+        stage('Install requirements') {
+            steps {
                 sh 'pip3 install -r test-requirements.txt'
-                sh "echo =============="
             }
         }
-        stage('Run Molecule'){
-            steps{
+        stage('Run molecule') {
+            steps {
+                sh 'mkdir -p molecule/default/roles/elasticsearch-role'
+                sh 'ln -sf `pwd` molecule/default/roles/elasticsearch-role'
                 sh 'molecule test'
             }
         }
